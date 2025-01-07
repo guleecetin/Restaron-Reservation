@@ -1,0 +1,51 @@
+﻿@model Masa
+
+<form method="post">
+    <input asp-for="Id" hidden />
+    <div class="border p-4 mt-4 rounded shadow-sm">
+        <div class="row pb-3">
+            <div class="col">
+                <h2 class="text-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Masa Silme Onayı
+                </h2>
+                <hr />
+                <p class="text-muted">Bu masayı silmek istediğinizden emin misiniz?</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label asp-for="TableNumber" class="form-label text-muted">Masa Numarası</label>
+                    <input asp-for="TableNumber" disabled class="form-control bg-light" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Capacity" class="form-label text-muted">Kapasite</label>
+                    <input asp-for="Capacity" disabled class="form-control bg-light" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="IsOccupied" class="form-label text-muted">Durum</label>
+                    <input value="@(Model.IsOccupied ? "Dolu" : "Boş")" disabled class="form-control bg-light" />
+                </div>
+            </div>
+
+           
+        </div>
+
+        <div class="row mt-4">
+            <div class="col d-flex gap-3 justify-content-center">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash-fill me-2"></i>
+                    Masayı Sil
+                </button>
+                <a asp-controller="Masa" asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Masalara Geri Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

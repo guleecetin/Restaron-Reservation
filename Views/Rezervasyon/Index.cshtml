@@ -1,0 +1,195 @@
+﻿<div class="container">
+    @if (TempData["basarili"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            @TempData["basarili"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 rounded-3 p-4 mt-4">
+        <div class="card-header bg-transparent border-0 pb-3">
+            <h2 class="text-center mb-0" style="color: #ffffff; font-weight: 500;">Reservations</h2>
+            <div class="text-center">
+                <div class="divider my-3" style="height: 2px; background: linear-gradient(to right, transparent, #ffffff, transparent); width: 150px; margin: 0 auto;"></div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover custom-table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Reservation Date</th>
+                            <th>Time</th>
+                            <th>Guests</th>
+                            <th>Contact</th>
+                            <th>Table</th>
+                            <th>Price</th>
+                            <th>Type</th>
+                            <th colspan="2" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var rezervasyon in Model)
+                        {
+                            <tr>
+                                <td>@rezervasyon.Id</td>
+                                <td>@rezervasyon.Name</td>
+                                <td>@rezervasyon.Description</td>
+                                <td>@rezervasyon.ReservationDate.ToString("dd/MM/yyyy")</td>
+                                <td>@rezervasyon.ReservationTime</td>
+                                <td>@rezervasyon.GuestCount</td>
+                                <td>@rezervasyon.ContactNumber</td>
+                                <td>@rezervasyon.TableNumber</td>
+                                <td>@rezervasyon.Price.ToString("C")</td>
+                                <td>@rezervasyon.RezervasyonTuru.Name</td>
+                                <td>
+                                    <a asp-controller="Rezervasyon" asp-action="EkleGuncelle" asp-route-id="@rezervasyon.Id"
+                                       class="btn btn-outline-warning btn-sm">
+                                        <i class="bi bi-pencil-square me-1"></i>Update
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-controller="Rezervasyon" asp-action="Sil" asp-route-id="@rezervasyon.Id"
+                                       class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a asp-controller="Rezervasyon" asp-action="EkleGuncelle"
+                   class="btn btn-sm px-3 py-1 btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Create New Reservation 
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: #0a0a0a;
+        font-family: 'Montserrat', sans-serif;
+        color: #fff;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(212,175,55,0.1) !important;
+    }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(212,175,55,0.15) !important;
+        }
+
+        .card h2 {
+            color: #d4af37;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+        }
+
+    .divider {
+        height: 2px;
+        background: linear-gradient(to right, transparent, #d4af37, transparent);
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    /* Table Styles */
+    .table {
+        color: #fff;
+        margin-bottom: 0;
+    }
+
+        .table thead th {
+            border-bottom: 2px solid rgba(212,175,55,0.2);
+            color: #d4af37;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: transparent;
+        }
+
+        .table td {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            vertical-align: middle;
+            padding: 1rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background: rgba(212,175,55,0.05);
+            }
+
+    /* Button Styles */
+    .btn-primary {
+        background: #d4af37 !important;
+        color: #000 !important;
+        border: none !important;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 300px;
+    }
+
+        .btn-primary:hover {
+            background: #fff !important;
+            box-shadow: 0 0 30px rgba(212,175,55,0.5);
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-secondary {
+        background: transparent !important;
+        color: #d4af37 !important;
+        border: 1px solid #d4af37 !important;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-secondary:hover {
+            background: rgba(212,175,55,0.1) !important;
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-danger {
+        background: transparent !important;
+        color: #dc3545 !important;
+        border: 1px solid #dc3545 !important;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-danger:hover {
+            background: rgba(220,53,69,0.1) !important;
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+
+    /* Alert Styles */
+    .alert-success {
+        background: rgba(212,175,55,0.1) !important;
+        border: 1px solid rgba(212,175,55,0.2) !important;
+        color: #d4af37 !important;
+    }
+
+        .alert-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212,175,55,0.15);
+        }
+</style>

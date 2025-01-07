@@ -1,0 +1,284 @@
+﻿@{
+    ViewData["Title"] = "Urban Retreat | Luxury Dining Experience";
+}
+<div class="landing-container">
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Urban Retreat</h1>
+            <p>A Luxury Dining Experience</p>
+            <div class="decorative-line"></div>
+        </div>
+    </div>
+
+    <!-- Featured Image -->
+    <div class="image-wrapper">
+        <img src="/img/rezervasyon.jpg" alt="Luxury Restaurant Setting" class="main-image">
+        <div class="image-overlay"></div>
+    </div>
+
+    <!-- Reservation Card -->
+    <div class="reservation-card">
+        <div class="card-content">
+            <h2>Reserve Your Experience</h2>
+            <p>Indulge in culinary excellence</p>
+            <a href="@Url.Action("EkleGuncelle", "Rezervasyon")" class="reserve-btn">
+                Make a Reservation
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Urban Retreat</p>
+    </footer>
+</div>
+
+<style>
+    /* Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background: #0a0a0a;
+        color: #fff;
+    }
+
+    /* Hero Section */
+    .hero {
+        height: 100vh;
+        background: linear-gradient(45deg, #000, #1a1a1a);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(255,215,0,0.1) 0%, transparent 70%);
+        animation: pulseOverlay 4s infinite alternate;
+    }
+
+    .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+        padding: 0 20px;
+    }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,215,0,0.5);
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            color: #d4af37;
+            margin-bottom: 30px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+    .decorative-line {
+        width: 150px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        margin: 30px auto;
+        animation: expandLine 2s ease-out;
+    }
+
+    /* Image Section */
+    .image-wrapper {
+        position: relative;
+        margin: -100px auto 0;
+        width: 80%;
+        max-width: 1200px;
+        overflow: hidden;
+        border-radius: 4px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .main-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        transform: scale(1.05);
+        transition: transform 1.5s ease;
+    }
+
+    .image-wrapper:hover .main-image {
+        transform: scale(1);
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(212,175,55,0.2), transparent);
+        pointer-events: none;
+    }
+
+    /* Reservation Card */
+    .reservation-card {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        margin: -50px auto 100px;
+        width: 90%;
+        max-width: 800px;
+        padding: 60px 40px;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-content h2 {
+        font-size: 2.5rem;
+        color: #d4af37;
+        margin-bottom: 20px;
+        font-weight: 300;
+        letter-spacing: 0.2em;
+    }
+
+    .card-content p {
+        color: #999;
+        margin-bottom: 40px;
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .reserve-btn {
+        display: inline-block;
+        padding: 20px 50px;
+        background: #d4af37;
+        color: #000;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .reserve-btn:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(212,175,55,0.5);
+            transform: translateY(-2px);
+        }
+
+    /* Footer */
+    footer {
+        background: #000;
+        padding: 30px 0;
+        text-align: center;
+        border-top: 1px solid rgba(212,175,55,0.2);
+    }
+
+        footer p {
+            color: #666;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+    /* Animations */
+    @@keyframes pulseOverlay {
+        0% {
+            opacity: 0.3;
+        }
+
+        100% {
+            opacity: 0.7;
+        }
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes expandLine {
+        from {
+            width: 0;
+            opacity: 0;
+        }
+
+        to {
+            width: 150px;
+            opacity: 1;
+        }
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 3rem;
+            letter-spacing: 0.3em;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+        }
+
+        .image-wrapper {
+            width: 95%;
+            margin-top: -50px;
+        }
+
+        .reservation-card {
+            width: 95%;
+            padding: 40px 20px;
+        }
+
+        .card-content h2 {
+            font-size: 2rem;
+        }
+
+        .reserve-btn {
+            padding: 15px 30px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
