@@ -21,3 +21,4 @@ Backend: ASP.NET Core with MVC Architecture
 Database: PostgreSQL (for storing table information)
 Frontend: Bootstrap and custom CSS for responsive and modern design
 Version Control: Git and GitHub for collaboration and source code management
+![giris](https://github.com/user-attachments/assets/6df210e3-f185-491b-8d8d-619d60535adf)
