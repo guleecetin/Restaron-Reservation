@@ -258,3 +258,11 @@ C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\
 C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\obj\Debug\net8.0\RestoranRezervasyonu.sourcelink.json
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\FluentAssertions.dll
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\obj\Debug\net8.0\RestoranRezervasyonu.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\gulen\source\repos\RestoranRezervasyonu\RestoranRezervasyonu\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

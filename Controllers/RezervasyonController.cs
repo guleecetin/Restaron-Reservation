@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RestoranRezervasyonu.Models;
 
 namespace RestoranRezervasyonu.Controllers
 {
+   
     public class RezervasyonController : Controller
     {
         private readonly IRezervasyonRepository _rezervasyonRepository;
@@ -45,21 +47,25 @@ namespace RestoranRezervasyonu.Controllers
            
         }
         [HttpPost]
-        public IActionResult EkleGuncelle(Rezervasyon rezervasyon,IFormFile? file)
+        public IActionResult EkleGuncelle(Rezervasyon rezervasyon, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                string rezervasyonPath = Path.Combine(wwwRootPath, @"img");
+                // Eğer 'ResimUrl' artık kullanılmıyorsa, dosya işlemleri de gereksizdir.
+                if (file != null)
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    string rezervasyonPath = Path.Combine(wwwRootPath, @"img");
 
-               
-
+                    // Bu kod bloğu dosya kaydetme işlemi içindir ve kaldırılabilir:
                     using (var fileStream = new FileStream(Path.Combine(rezervasyonPath, file.FileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
-                    rezervasyon.ResimUrl = @"\img\" + file.FileName;
-                
+
+                    // 'ResimUrl' artık modelde yoksa, bu atama kaldırılmalı.
+                    // rezervasyon.ResimUrl = @"\img\" + file.FileName;
+                }
 
                 if (rezervasyon.Id == 0)
                 {
@@ -72,40 +78,40 @@ namespace RestoranRezervasyonu.Controllers
                     TempData["basarili"] = "The new reservation has been successfully updated.";
                 }
 
+                _rezervasyonRepository.Kaydet();
 
-                _rezervasyonRepository.Kaydet();
-               
-                return RedirectToAction("Index","Rezervasyon");
+                return RedirectToAction("Index", "Rezervasyon");
             }
             return View();
         }
-     /*   public IActionResult Guncelle(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Rezervasyon? rezervasyon =_rezervasyonRepository.Get(u=>u.Id==id);
-            if (rezervasyon == null)
-            {
-                return NotFound();
-            }
-            return View(rezervasyon);
-        }
-     */
-       /* [HttpPost]
-        public IActionResult Guncelle(Rezervasyon rezervasyon)
-        {
-            if (ModelState.IsValid)
-            {
-                _rezervasyonRepository.Guncelle(rezervasyon);
-                _rezervasyonRepository.Kaydet();
-                TempData["basarili"] = "Rezervasyon basariyla guncellendi.";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-       */
+
+        /*   public IActionResult Guncelle(int? id)
+           {
+               if (id == null || id == 0)
+               {
+                   return NotFound();
+               }
+               Rezervasyon? rezervasyon =_rezervasyonRepository.Get(u=>u.Id==id);
+               if (rezervasyon == null)
+               {
+                   return NotFound();
+               }
+               return View(rezervasyon);
+           }
+        */
+        /* [HttpPost]
+         public IActionResult Guncelle(Rezervasyon rezervasyon)
+         {
+             if (ModelState.IsValid)
+             {
+                 _rezervasyonRepository.Guncelle(rezervasyon);
+                 _rezervasyonRepository.Kaydet();
+                 TempData["basarili"] = "Rezervasyon basariyla guncellendi.";
+                 return RedirectToAction("Index");
+             }
+             return View();
+         }
+        */
         public IActionResult Sil(int? id)
         {
             if (id == null || id == 0)

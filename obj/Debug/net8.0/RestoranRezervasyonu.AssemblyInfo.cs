@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("RestoranRezervasyonu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f1f94ae437872d5fecfadc8bfe80874e8e538f26")]
 [assembly: System.Reflection.AssemblyProductAttribute("RestoranRezervasyonu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RestoranRezervasyonu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

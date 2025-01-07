@@ -46,8 +46,7 @@ namespace RestoranRezervasyonu.Models
         [ValidateNever]
         public RezervasyonTuru RezervasyonTuru { get; set; }
 
-        [ValidateNever]
-        public string ResimUrl { get; set; }
+   
 
 
     }

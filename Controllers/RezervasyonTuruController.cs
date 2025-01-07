@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LibraryApplication.Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using RestoranRezervasyonu.Models;
 using RestoranRezervasyonu.Utility;
 
 namespace RestoranRezervasyonu.Controllers
 {
+    [Authorize(Roles = UserRoles.Role_Admin)]
     public class RezervasyonTuruController : Controller
     {
         private readonly IRezervasyonTuruRepository _rezervasyonTuruRepository;

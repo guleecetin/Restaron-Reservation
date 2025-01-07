@@ -46,7 +46,19 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[8.5.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
               "version": "[8.0.5, )"
             },

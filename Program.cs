@@ -1,3 +1,6 @@
+using FluentAssertions.Common;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestoranRezervasyonu.Models;
 using RestoranRezervasyonu.Utility;
@@ -11,6 +14,21 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddScoped<IRezervasyonTuruRepository, RezervasyonTuruRepository>();
 builder.Services.AddScoped<IRezervasyonRepository, RezervasyonRepository>();
 builder.Services.AddScoped<IMasaRepository, MasaRepository>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddIdentity<User, IdentityRole>(options => {
+    // Þifre gereksinimleri vs.
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+}).AddEntityFrameworkStores<UygulamaDbContext>()
+.AddDefaultTokenProviders();
+builder.Services.AddAuthentication(options => {
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+});
 
 var app = builder.Build();
 
@@ -24,6 +42,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 
 app.UseRouting();
 
