@@ -1,4 +1,4 @@
-﻿namespace LibraryApplication.Utility
+﻿namespace RestoranRezervasyonu.Utility
 {
     public static class UserRoles
     {

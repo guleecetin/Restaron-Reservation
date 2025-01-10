@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestoranRezervasyonu.Models;
+using RestoranRezervasyonu.Utility;
 
 namespace RestoranRezervasyonu.Controllers
 {
-    
+    [Authorize(Roles = UserRoles.Role_Kullanici)]
     public class MasaController : Controller
     {
         private readonly IMasaRepository _masaRepository;

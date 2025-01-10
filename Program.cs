@@ -6,50 +6,90 @@ using RestoranRezervasyonu.Models;
 using RestoranRezervasyonu.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<UygulamaDbContext>(options=>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<UygulamaDbContext>(options =>
+   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddScoped<IRezervasyonTuruRepository, RezervasyonTuruRepository>();
 builder.Services.AddScoped<IRezervasyonRepository, RezervasyonRepository>();
 builder.Services.AddScoped<IMasaRepository, MasaRepository>();
-builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddIdentity<User, IdentityRole>(options => {
-    // Þifre gereksinimleri vs.
+builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+    options.SignIn.RequireConfirmedAccount = false; // Email onayý istemiyoruz
+    options.SignIn.RequireConfirmedEmail = false;   // Email onayý istemiyoruz
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;
-}).AddEntityFrameworkStores<UygulamaDbContext>()
+})
+.AddEntityFrameworkStores<UygulamaDbContext>()
 .AddDefaultTokenProviders();
-builder.Services.AddAuthentication(options => {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Rolleri oluþtur
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+    // Rolleri oluþtur
+    var roles = new[] { UserRoles.Role_Admin, UserRoles.Role_Kullanici };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    // Admin kullanýcýsý oluþtur (isteðe baðlý)
+    var adminEmail = "admin@example.com";
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new ApplicationUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            FullName = "Admin User"
+        };
+        var result = await userManager.CreateAsync(adminUser, "Admin123!");
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, UserRoles.Role_Admin);
+        }
+    }
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+   name: "default",
+   pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

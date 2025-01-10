@@ -1,4 +1,7 @@
-﻿@using LibraryApplication.Utility
+﻿@using RestoranRezervasyonu.Utility
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<RestoranRezervasyonu.Models.ApplicationUser> UserManager
+@inject SignInManager<RestoranRezervasyonu.Models.ApplicationUser> SignInManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,40 +73,72 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <!-- Yeni navbar-collapse içeriği buraya gelecek -->
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <!-- Sol taraftaki linkler -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Rezervasyon" asp-action="Index">Reservation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Masa" asp-action="Index">Tables</a>
-                        </li>
-
-                        @if (User.IsInRole(UserRoles.Role_Admin))
+                        @if (User.Identity.IsAuthenticated)
                         {
-
+                            @if (User.IsInRole(UserRoles.Role_Kullanici))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Rezervasyon" asp-action="Index">Reservation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Masa" asp-action="Index">Tables</a>
+                                </li>
+                            }
+                            @if (User.IsInRole(UserRoles.Role_Admin))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="RezervasyonTuru" asp-action="Index">Reservation Type</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Rezervasyon" asp-action="Index">Reservation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Masa" asp-action="Index">Tables</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="RezervasyonTuru" asp-action="Index">Reservation Type</a>
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Contact</a>
                             </li>
-
                         }
                     </ul>
 
                     <!-- Sağ taraftaki linkler -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Sign Up</a>
-                        </li>
+                    <ul class="navbar-nav ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link">Welcome, @User.Identity.Name!</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn nav-link">Sign Out</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Sign Up</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RestoranRezervasyonu.Models;
+using RestoranRezervasyonu.Utility;
 
 namespace RestoranRezervasyonu.Controllers
 {
-   
+    [Authorize(Roles = UserRoles.Role_Kullanici)]
     public class RezervasyonController : Controller
     {
+       
         private readonly IRezervasyonRepository _rezervasyonRepository;
         private readonly IRezervasyonTuruRepository _rezervasyonTuruRepository;
         public readonly IWebHostEnvironment _webHostEnvironment;

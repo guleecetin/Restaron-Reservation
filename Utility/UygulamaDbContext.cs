@@ -5,14 +5,14 @@ using RestoranRezervasyonu.Models;
 
 namespace RestoranRezervasyonu.Utility
 {
-    public class UygulamaDbContext: IdentityDbContext<User>
+    public class UygulamaDbContext: IdentityDbContext
     {
         public UygulamaDbContext(DbContextOptions<UygulamaDbContext> options) : base(options)
         { }
         public DbSet<RezervasyonTuru>RezervasyonTurleri {get; set;}
         public DbSet<Rezervasyon> Rezervasyonlar { get; set; }
         public DbSet<Masa>Masalar { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 
     }

@@ -3,7 +3,7 @@ using static RestoranRezervasyonu.Models.UserRepository;
 
 namespace RestoranRezervasyonu.Models
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository : Repository<ApplicationUser>, IUserRepository
     {
        
             private readonly UygulamaDbContext _uygulamaDbContext;

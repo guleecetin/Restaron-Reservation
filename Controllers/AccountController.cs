@@ -12,15 +12,15 @@ namespace RestoranRezervasyonu.Controllers
         public class AccountController : Controller
         {
             private readonly UygulamaDbContext _context;
-            private readonly IPasswordHasher<User> _passwordHasher;
-            private readonly SignInManager<User> _signInManager;
-            private readonly UserManager<User> _userManager;
+            private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+            private readonly SignInManager<ApplicationUser> _signInManager;
+            private readonly UserManager<ApplicationUser> _userManager;
 
             public AccountController(
                 UygulamaDbContext context,
-                IPasswordHasher<User> passwordHasher,
-                SignInManager<User> signInManager,
-                UserManager<User> userManager)
+                IPasswordHasher<ApplicationUser> passwordHasher,
+                SignInManager<ApplicationUser> signInManager,
+                UserManager<ApplicationUser> userManager)
             {
                 _context = context;
                 _passwordHasher = passwordHasher;
@@ -40,22 +40,25 @@ namespace RestoranRezervasyonu.Controllers
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
             {
-                ViewData["ReturnUrl"] = returnUrl;
                 if (ModelState.IsValid)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(model.Email,
-                        model.Password, model.RememberMe, lockoutOnFailure: false);
+                    // Email ile giriş yapılıyor
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    if (user != null)
+                    {
+                        var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
 
-                    if (result.Succeeded)
-                    {
-                        return RedirectToLocal(returnUrl);
+                        if (result.Succeeded)
+                        {
+                            TempData["SuccessMessage"] = $"Welcome {user.FullName}!";
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
-                        return View(model);
-                    }
+
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    TempData["ErrorMessage"] = "Login failed. Please check your information.";
                 }
+
                 return View(model);
             }
 
@@ -69,29 +72,37 @@ namespace RestoranRezervasyonu.Controllers
 
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Register(User model, string returnUrl = null)
+            public async Task<IActionResult> Register(ApplicationUser model, string returnUrl = null)
             {
                 ViewData["ReturnUrl"] = returnUrl;
                 if (ModelState.IsValid)
                 {
-                    // E-posta kontrolü
-                    if (await _context.Users.AnyAsync(u => u.Email == model.Email))
+                    var user = new ApplicationUser
                     {
-                        ModelState.AddModelError("Email", "Bu e-posta adresi zaten kayıtlı");
-                        return View(model);
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber,
+                        UserName = model.Email
+                    };
+
+                    var result = await _userManager.CreateAsync(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        // Kullanıcıya "Kullanici" rolünü ata
+                        await _userManager.AddToRoleAsync(user, UserRoles.Role_Kullanici);
+
+                        // Kullanıcıyı otomatik olarak giriş yap
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+
+                        TempData["SuccessMessage"] = "Registration completed successfully!";
+                        return RedirectToLocal(returnUrl);
                     }
 
-                    // Şifreyi hashle
-                    model.Password = _passwordHasher.HashPassword(null, model.Password);
-
-                    // Veritabanına kaydet
-                    _context.Users.Add(model);
-                    await _context.SaveChangesAsync();
-
-                    // Başarılı kayıt mesajı
-                    TempData["SuccessMessage"] = "Kayıt başarıyla tamamlandı!";
-
-                    return RedirectToLocal(returnUrl);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
 
                 return View(model);
@@ -114,6 +125,7 @@ namespace RestoranRezervasyonu.Controllers
             public async Task<IActionResult> Logout()
             {
                 await _signInManager.SignOutAsync();
+                TempData["SuccessMessage"] = "Successfully exited.";
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
